@@ -1,0 +1,24 @@
+[lib]
+proc-macro = true
+
+[package]
+name = "function_name-proc-macro"
+version = "0.1.0"
+authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
+edition = "2018"
+
+description = "macro that expands to the name of the annotated function"
+documentation = "https://docs.rs/function_name"
+homepage = "https://crates.io/crates/function_name"
+repository = "https://github.com/danielhenrymantilla/rust-function_name"
+keywords = ["macro", "proc-macro", "proc-macro-attribute", "name", "function_name"]
+
+license-file = "../LICENSE"
+
+[dependencies]
+quote = "0.6.12"
+syn = { version = "0.15.35", features = ["full"] }
+
+[features]
+extra-traits = ["syn/extra-traits"]
+
