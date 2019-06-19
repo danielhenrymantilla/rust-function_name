@@ -1,10 +1,12 @@
-# `#[function_name]`
+## `#[function_name]`
 
 Function attribute that generates a `function_name!` macro
 in the scope of the function's body.
 
 The generated `function_name!()` is a macro that expands to
 the name of the annotated function, as a string literal.
+
+[![Repository](https://img.shields.io/badge/repository-GitHub-brightgreen.svg)][Repository] [![Latest version](https://img.shields.io/crates/v/function_name.svg)][crates.io] [![Documentation](https://docs.rs/function_name/badge.svg)][Documentation] [![License](https://img.shields.io/crates/l/function_name.svg)](https://github.com/danielhenrymantilla/rust-function_name#license)
 
 ## Examples
 
@@ -50,4 +52,8 @@ pub mod foo {
     }
 }
 ```
+
+[Repository]: https://github.com/danielhenrymantilla/rust-function_name
+[Documentation]: https://docs.rs/function_name
+[crates.io]: https://crates.io/crates/function_name
 

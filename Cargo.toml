@@ -1,6 +1,6 @@
 [package]
 name = "function_name"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
@@ -10,7 +10,8 @@ homepage = "https://crates.io/crates/function_name"
 repository = "https://github.com/danielhenrymantilla/rust-function_name"
 keywords = ["macro", "proc-macro", "proc-macro-attribute", "name", "function_name"]
 
-license-file = "LICENSE"
+readme = "README.md"
+license = "MIT"
 
 [dependencies]
 function_name-proc-macro = { version = "0.1.0", path = "proc-macro" }
