@@ -1,6 +1,6 @@
-use ::function_name::function_name;
+use ::function_name::named;
 
-#[function_name]
+#[named]
 fn my_super_duper_function ()
 {
     dbg!(function_name!());

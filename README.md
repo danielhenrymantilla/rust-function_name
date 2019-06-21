@@ -1,4 +1,4 @@
-## `#[function_name]`
+## `#[named]`
 
 Function attribute that generates a `function_name!` macro
 in the scope of the function's body.
@@ -8,12 +8,12 @@ the name of the annotated function, as a string literal.
 
 [![Repository](https://img.shields.io/badge/repository-GitHub-brightgreen.svg)][Repository] [![Latest version](https://img.shields.io/crates/v/function_name.svg)][crates.io] [![Documentation](https://docs.rs/function_name/badge.svg)][Documentation] [![License](https://img.shields.io/crates/l/function_name.svg)](https://github.com/danielhenrymantilla/rust-function_name#license)
 
-## Examples
+### Examples
 
 ```rust
-use ::function_name::function_name;
+use ::function_name::named;
 
-#[function_name]
+#[named]
 fn my_super_duper_function ()
 {
     assert_eq!(
@@ -37,7 +37,7 @@ macro_rules! function_path {() => (concat!(
 
 pub mod foo {
     pub mod bar {
-        #[function_name]
+        #[named]
         pub fn baz ()
         {
             assert_eq!(

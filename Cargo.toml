@@ -1,6 +1,6 @@
 [package]
 name = "function_name"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
@@ -14,12 +14,13 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
-function_name-proc-macro = { version = "0.1.0", path = "proc-macro" }
+function_name-proc-macro = { version = "0.2.0", path = "proc-macro" }
 
 [features]
 default = []
+dev = ["function_name-proc-macro/test"]
 nightly = []
 
 [package.metadata.docs.rs]
-features = ["nightly", ]
+features = ["nightly", "dev"]
 

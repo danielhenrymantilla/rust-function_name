@@ -6,7 +6,7 @@ macro_rules! function_path {() => (concat!(
 
 pub mod foo {
     pub mod bar {
-        #[function_name]
+        #[named]
         pub fn baz ()
         {
             dbg!(function_path!());

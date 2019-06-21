@@ -1,47 +1,72 @@
 extern crate proc_macro; use ::proc_macro::TokenStream;
-use ::syn::{
+use ::syn::{self,
     ItemFn,
     parse_macro_input,
-    parse_quote,
+    spanned::Spanned,
+};
+use ::quote::{
+    quote,
+    quote_spanned,
 };
 
+#[cfg(not(feature = "test"))]
+macro_rules! CRATE_NAME {() => (
+    ::core::convert::identity::<syn::Ident>(syn::parse_str(
+        &::proc_macro_crate::crate_name("function_name")
+            .expect("Cargo.toml must have a function_name dependency")
+    ).unwrap())
+)}
+#[cfg(feature = "test")]
+macro_rules! CRATE_NAME {() => (
+    ::core::convert::identity::<syn::Ident>(syn::parse_quote! {
+        function_name
+    })
+)}
+
+const IDENT_SUFFIX: &'static str = "__hack__";
+
 #[proc_macro_attribute] pub
-fn function_name (params: TokenStream, input: TokenStream) -> TokenStream
+fn named (params: TokenStream, input: TokenStream) -> TokenStream
 {
-    if params.into_iter().next().is_some() {
-        return TokenStream::from(::quote::quote! {
-            compile_error!(
-                "#[function_name] does not take arguments"
-            );
-        });
+    if params.clone().into_iter().next().is_some() {
+        return syn::Error::new_spanned(
+            if true { params.into() } else { quote!() },
+            "#[named] does not take arguments",
+        ).to_compile_error().into();
     }
-    let mut fn_decl = parse_macro_input!(input as ItemFn);
-    let block = *fn_decl.block;
-    let ident = &fn_decl.ident;
-    *fn_decl.block = parse_quote! {
+    let mut input_fn = parse_macro_input!(input as ItemFn);
+    let ident = syn::Ident::new(
+        &format!("{}{}", input_fn.ident, IDENT_SUFFIX),
+        input_fn.ident.span(),
+    );
+    let _crate = CRATE_NAME!();
+    let block = *input_fn.block;
+    *input_fn.block = syn::parse_quote! {
         {
+            #[allow(dead_code)]
             #[allow(non_camel_case_types)]
-            #[derive(function_name::function_name_hack)]
+            #[derive(::#_crate::named_hack)]
             enum #ident {}
 
             #block
         }
     };
-    TokenStream::from(::quote::quote!{
-        #fn_decl
+    TokenStream::from(quote_spanned! { input_fn.span() =>
+        #input_fn
     })
 }
 
 #[doc(hidden)]
-#[proc_macro_derive(function_name_hack)] pub
+#[proc_macro_derive(named_hack)] pub
 fn hack (input: TokenStream) -> TokenStream
 {
-    let input: ::syn::DeriveInput = parse_macro_input!(input);
-    let fname = ::syn::LitStr::new(&input.ident.to_string(), input.ident.span());
-    TokenStream::from(::quote::quote!{
+    let input: syn::DeriveInput = parse_macro_input!(input);
+    let ident = input.ident.to_string();
+    let ident = &ident[.. ident.len() - IDENT_SUFFIX.len()];
+    let fname = syn::LitStr::new(ident, input.ident.span());
+    TokenStream::from(quote! {
         macro_rules! function_name {() => (
             #fname
         )}
     })
 }
-

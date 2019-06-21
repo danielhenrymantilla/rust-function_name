@@ -1,6 +1,5 @@
-
 #![doc(test(attr(deny(warnings))))]
-#![doc(test(attr(allow(unused_variables))))]
+#![doc(test(attr(allow(unused))))]
 
 #![warn(missing_docs)]
 
@@ -20,11 +19,7 @@
 )]
 
 #[doc(inline)]
-pub use ::function_name_proc_macro::function_name;
+pub use ::function_name_proc_macro::named;
 
 #[doc(hidden)]
-pub use ::function_name_proc_macro::function_name_hack;
-
-#[doc(hidden)]
-pub mod function_name { pub use super::function_name_hack; }
-
+pub use ::function_name_proc_macro::named_hack;
