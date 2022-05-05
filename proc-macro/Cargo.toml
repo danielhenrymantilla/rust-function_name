@@ -3,7 +3,7 @@ proc-macro = true
 
 [package]
 name = "function_name-proc-macro"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
@@ -13,7 +13,7 @@ homepage = "https://crates.io/crates/function_name"
 repository = "https://github.com/danielhenrymantilla/rust-function_name"
 keywords = ["macro", "proc-macro", "proc-macro-attribute", "name", "function_name"]
 
-license-file = "../LICENSE"
+license = "MIT"
 
 [dependencies]
 proc-macro-crate = "0.1.4"
