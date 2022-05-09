@@ -37,7 +37,7 @@ fn named (params: TokenStream, input: TokenStream) -> TokenStream
     }
     let mut input_fn = parse_macro_input!(input as ItemFn);
     let ident = syn::Ident::new(
-        &format!("{}{}",  input_fn.ident.to_string().replace(RAW_PREFIX, ""), IDENT_SUFFIX),
+        &format!("{}{}", input_fn.ident.to_string().replace(RAW_PREFIX, ""), IDENT_SUFFIX),
         input_fn.ident.span(),
     );
     let _crate = CRATE_NAME!();
