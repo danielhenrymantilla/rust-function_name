@@ -12,7 +12,7 @@ use ::quote::{
 #[cfg(not(feature = "test"))]
 macro_rules! CRATE_NAME {() => (
     ::core::convert::identity::<syn::Ident>(syn::parse_str(
-        &::proc_macro_crate::crate_name("function_name")
+        &::proc_macro_crate::crate_name("function_name-proc-macro")
             .expect("Cargo.toml must have a function_name dependency")
     ).unwrap())
 )}
@@ -24,6 +24,7 @@ macro_rules! CRATE_NAME {() => (
 )}
 
 const IDENT_SUFFIX: &'static str = "__hack__";
+const RAW_PREFIX: &'static str = "r#";
 
 #[proc_macro_attribute] pub
 fn named (params: TokenStream, input: TokenStream) -> TokenStream
@@ -36,7 +37,7 @@ fn named (params: TokenStream, input: TokenStream) -> TokenStream
     }
     let mut input_fn = parse_macro_input!(input as ItemFn);
     let ident = syn::Ident::new(
-        &format!("{}{}", input_fn.ident, IDENT_SUFFIX),
+        &format!("{}{}",  input_fn.ident.to_string().replace(RAW_PREFIX, ""), IDENT_SUFFIX),
         input_fn.ident.span(),
     );
     let _crate = CRATE_NAME!();
