@@ -1,4 +1,5 @@
-#[macro_use] extern crate function_name;
+#[macro_use]
+extern crate function_name;
 
 #[named]
 fn foo ()
