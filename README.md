@@ -8,17 +8,17 @@ the name of the annotated function, as a string literal.
 
 [![Repository](https://img.shields.io/badge/repository-GitHub-brightgreen.svg)](
 https://github.com/danielhenrymantilla/rust-function_name)
-[![Latest version](https://img.shields.io/crates/v/rust-function_name.svg)](
-https://crates.io/crates/rust-function_name)
-[![Documentation](https://docs.rs/rust-function_name/badge.svg)](
-https://docs.rs/rust-function_name)
+[![Latest version](https://img.shields.io/crates/v/function_name.svg)](
+https://crates.io/crates/function_name)
+[![Documentation](https://docs.rs/function_name/badge.svg)](
+https://docs.rs/function_name)
 [![MSRV](https://img.shields.io/badge/MSRV-1.36.0-white)](
 https://gist.github.com/danielhenrymantilla/8e5b721b3929084562f8f65668920c33)
 [![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](
 https://github.com/rust-secure-code/safety-dance/)
 [![no_std compatible](https://img.shields.io/badge/no__std-compatible-success.svg)](
 https://github.com/rust-secure-code/safety-dance/)
-[![License](https://img.shields.io/crates/l/rust-function_name.svg)](
+[![License](https://img.shields.io/crates/l/function_name.svg)](
 https://github.com/danielhenrymantilla/rust-function_name/blob/master/LICENSE-ZLIB)
 [![CI](https://github.com/danielhenrymantilla/rust-function_name/workflows/CI/badge.svg)](
 https://github.com/danielhenrymantilla/rust-function_name/actions)

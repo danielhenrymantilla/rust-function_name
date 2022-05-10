@@ -2,15 +2,15 @@
 # It is not intended for manual editing.
 [[package]]
 name = "function_name"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
- "function_name 0.2.2",
- "function_name-proc-macro 0.2.2",
+ "function_name 0.2.3",
+ "function_name-proc-macro 0.2.3",
 ]
 
 [[package]]
 name = "function_name-proc-macro"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "proc-macro-crate 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "quote 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
