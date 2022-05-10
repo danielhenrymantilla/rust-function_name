@@ -7,7 +7,7 @@ The generated `function_name!()` is a macro that expands to
 the name of the annotated function, as a string literal.
 
 [![Repository](https://img.shields.io/badge/repository-GitHub-brightgreen.svg)](
-https://github.com/danielhenrymantilla/rust-function_name.rs)
+https://github.com/danielhenrymantilla/rust-function_name)
 [![Latest version](https://img.shields.io/crates/v/rust-function_name.svg)](
 https://crates.io/crates/rust-function_name)
 [![Documentation](https://docs.rs/rust-function_name/badge.svg)](
@@ -19,9 +19,9 @@ https://github.com/rust-secure-code/safety-dance/)
 [![no_std compatible](https://img.shields.io/badge/no__std-compatible-success.svg)](
 https://github.com/rust-secure-code/safety-dance/)
 [![License](https://img.shields.io/crates/l/rust-function_name.svg)](
-https://github.com/danielhenrymantilla/rust-function_name.rs/blob/master/LICENSE-ZLIB)
-[![CI](https://github.com/danielhenrymantilla/rust-function_name.rs/workflows/CI/badge.svg)](
-https://github.com/danielhenrymantilla/rust-function_name.rs/actions)
+https://github.com/danielhenrymantilla/rust-function_name/blob/master/LICENSE-ZLIB)
+[![CI](https://github.com/danielhenrymantilla/rust-function_name/workflows/CI/badge.svg)](
+https://github.com/danielhenrymantilla/rust-function_name/actions)
 
 ### Examples
 
