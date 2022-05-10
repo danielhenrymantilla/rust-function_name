@@ -3,7 +3,7 @@ proc-macro = true
 
 [package]
 name = "function_name-proc-macro"
-version = "0.2.2-rc1"
+version = "0.2.2-rc1"  # Keep in sync
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
