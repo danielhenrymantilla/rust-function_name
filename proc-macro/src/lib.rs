@@ -3,20 +3,8 @@ use {
     ::core::{
         ops::Not as _,
     },
-    ::proc_macro::{
+    ::proc_macro::{*,
         TokenStream,
-    },
-    ::proc_macro2::{*,
-        Span,
-        TokenStream as TokenStream2,
-    },
-    ::quote::{
-        quote,
-        quote_spanned,
-        ToTokens,
-    },
-    ::syn::{*,
-        Result, // explicitly shadow it
     },
 };
 
@@ -28,28 +16,22 @@ fn named (
 {
     named_impl(params.into(), input.into())
         .unwrap_or_else(|err| {
-            let mut errors =
-                err .into_iter()
-                    .map(|err| Error::new(
-                        err.span(),
-                        format_args!("`#[function_name::named]`: {}", err),
-                    ))
-            ;
-            let mut err = errors.next().unwrap();
-            errors.for_each(|cur| err.combine(cur));
-            err.to_compile_error()
+            let err = Some(TokenTree::from(Literal::string(err)));
+            quote!(
+                ::core::compile_error! { #err }
+            )
         })
         .into()
 }
 
 fn named_impl (
-    params: TokenStream2,
-    input: TokenStream2,
-) -> Result<TokenStream2>
+    params: TokenStream,
+    input: TokenStream,
+) -> Result<TokenStream, &'static str>
 {
     // parse::Nothing for `params`.
-    if let Some(tt) = params.into_iter().next() {
-        return Err(Error::new(tt.span(), "unexpected attribute arguments"));
+    if let Some(_) = params.into_iter().next() {
+        return Err("unexpected attribute arguments".into());
     }
 
     let ref mut tts = input.into_iter().peekable();
@@ -68,14 +50,14 @@ fn named_impl (
             input.push(tt);
             let fname = tts.peek().unwrap().to_string();
             input.extend(tts);
-            break fname;
+            break Some(TokenTree::from(Literal::string(&fname)));
         }
         input.push(tt);
     };
 
     let g = match input.last_mut() {
         | Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => g,
-        | _ => return Err(Error::new(Span::call_site(), "expected a `fn`")),
+        | _ => return Err("expected a `fn`"),
     };
     let g_span = g.span();
     *g = Group::new(g.delimiter(), {
@@ -90,3 +72,82 @@ fn named_impl (
     g.set_span(g_span);
     Ok(input.into_iter().collect())
 }
+
+/// Mini `quote!` implementation,
+/// can only interpolate `impl IntoIterator<Item = TokenTree>`.
+macro_rules! quote_ {
+    (
+        @$q:tt
+        { $($code:tt)* } $($rest:tt)*
+    ) => (
+        $q.push(
+            TokenTree::Group(Group::new(
+                Delimiter::Brace,
+                quote!($($code)*)
+            ))
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        [ $($code:tt)* ]
+        $($rest:tt)*
+    ) => (
+        $q.push(
+            TokenTree::Group(Group::new(
+                Delimiter::Bracket,
+                quote!($($code)*)
+            ))
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        ( $($code:tt)* )
+        $($rest:tt)*
+    ) => (
+        $q.push(
+            TokenTree::Group(Group::new(
+                Delimiter::Parenthesis,
+                quote!($($code)*)
+            ))
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        #$var:ident
+        $($rest:tt)*
+    ) => (
+        $q.extend($var);
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        $tt:tt $($rest:tt)*
+    ) => (
+        $q.extend(
+            stringify!($tt)
+                .parse::<TokenStream>()
+                .unwrap()
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        /* nothign left */
+    ) => ();
+
+    (
+        $($code:tt)*
+    ) => ({
+        let mut _q = Vec::<TokenTree>::new();
+        quote!(@_q $($code)*);
+        _q.into_iter().collect::<TokenStream>()
+    });
+} use quote_ as quote;

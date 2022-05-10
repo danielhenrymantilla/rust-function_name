@@ -14,15 +14,3 @@ repository = "https://github.com/danielhenrymantilla/rust-function_name"
 keywords = ["macro", "proc-macro", "proc-macro-attribute", "name", "function_name"]
 
 license = "MIT"
-
-[dependencies]
-quote.version = "1.0.0"
-proc-macro2.version = "1.0.0"
-syn.version = "1.0.0"
-syn.default-features = false
-syn.features = [
-    "proc-macro",
-]
-
-[features]
-default = []

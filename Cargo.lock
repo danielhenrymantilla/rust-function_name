@@ -10,45 +10,4 @@ dependencies = [
 [[package]]
 name = "function_name-proc-macro"
 version = "0.3.0-rc1"
-dependencies = [
- "proc-macro2 1.0.38 (registry+https://github.com/rust-lang/crates.io-index)",
- "quote 1.0.18 (registry+https://github.com/rust-lang/crates.io-index)",
- "syn 1.0.93 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
-[[package]]
-name = "proc-macro2"
-version = "1.0.38"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "unicode-xid 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "quote"
-version = "1.0.18"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "proc-macro2 1.0.38 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "syn"
-version = "1.0.93"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "proc-macro2 1.0.38 (registry+https://github.com/rust-lang/crates.io-index)",
- "quote 1.0.18 (registry+https://github.com/rust-lang/crates.io-index)",
- "unicode-xid 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "unicode-xid"
-version = "0.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[metadata]
-"checksum proc-macro2 1.0.38 (registry+https://github.com/rust-lang/crates.io-index)" = "9027b48e9d4c9175fa2218adf3557f91c1137021739951d4932f5f8268ac48aa"
-"checksum quote 1.0.18 (registry+https://github.com/rust-lang/crates.io-index)" = "a1feb54ed693b93a84e14094943b84b7c4eae204c512b7ccb95ab0c66d278ad1"
-"checksum syn 1.0.93 (registry+https://github.com/rust-lang/crates.io-index)" = "04066589568b72ec65f42d65a1a52436e954b168773148893c020269563decf2"
-"checksum unicode-xid 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "957e51f3646910546462e67d5f7599b9e4fb8acdd304b087a6494730f9eebf04"
