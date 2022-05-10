@@ -1,12 +1,27 @@
-## `#[named]`
+## `::function_name`
 
-Function attribute that generates a `function_name!` macro
+Function attribute `#[named]` that generates a `function_name!` macro
 in the scope of the function's body.
 
 The generated `function_name!()` is a macro that expands to
 the name of the annotated function, as a string literal.
 
-[![Repository](https://img.shields.io/badge/repository-GitHub-brightgreen.svg)][Repository] [![Latest version](https://img.shields.io/crates/v/function_name.svg)][crates.io] [![Documentation](https://docs.rs/function_name/badge.svg)][Documentation] [![License](https://img.shields.io/crates/l/function_name.svg)](https://github.com/danielhenrymantilla/rust-function_name#license)
+[![Repository](https://img.shields.io/badge/repository-GitHub-brightgreen.svg)](
+https://github.com/danielhenrymantilla/rust-function_name.rs)
+[![Latest version](https://img.shields.io/crates/v/rust-function_name.svg)](
+https://crates.io/crates/rust-function_name)
+[![Documentation](https://docs.rs/rust-function_name/badge.svg)](
+https://docs.rs/rust-function_name)
+[![MSRV](https://img.shields.io/badge/MSRV-1.36.0-white)](
+https://gist.github.com/danielhenrymantilla/8e5b721b3929084562f8f65668920c33)
+[![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](
+https://github.com/rust-secure-code/safety-dance/)
+[![no_std compatible](https://img.shields.io/badge/no__std-compatible-success.svg)](
+https://github.com/rust-secure-code/safety-dance/)
+[![License](https://img.shields.io/crates/l/rust-function_name.svg)](
+https://github.com/danielhenrymantilla/rust-function_name.rs/blob/master/LICENSE-ZLIB)
+[![CI](https://github.com/danielhenrymantilla/rust-function_name.rs/workflows/CI/badge.svg)](
+https://github.com/danielhenrymantilla/rust-function_name.rs/actions)
 
 ### Examples
 
@@ -56,4 +71,3 @@ pub mod foo {
 [Repository]: https://github.com/danielhenrymantilla/rust-function_name
 [Documentation]: https://docs.rs/function_name
 [crates.io]: https://crates.io/crates/function_name
-
