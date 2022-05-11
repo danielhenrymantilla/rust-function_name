@@ -1,72 +1,153 @@
-extern crate proc_macro;
-
 #[allow(unused_imports)]
 use {
-    ::proc_macro::{
+    ::core::{
+        ops::Not as _,
+    },
+    ::proc_macro::{*,
         TokenStream,
-    },
-    ::syn::{*,
-        spanned::Spanned,
-        Result,
-    },
-    ::quote::{
-        quote,
-        quote_spanned,
     },
 };
 
-#[cfg(not(feature = "test"))]
-macro_rules! CRATE_NAME {() => (
-    ::core::convert::identity::<Ident>(parse_str(
-        &::proc_macro_crate::crate_name("function_name")
-            .expect("Cargo.toml must have a function_name dependency")
-    ).unwrap())
-)}
-#[cfg(feature = "test")]
-macro_rules! CRATE_NAME {() => (
-    ::core::convert::identity::<Ident>(parse_quote! {
-        function_name
-    })
-)}
-
-const IDENT_SUFFIX: &'static str = "__hack__";
-
 #[proc_macro_attribute] pub
-fn named (params: TokenStream, input: TokenStream)
-  -> TokenStream
+fn named (
+    params: TokenStream,
+    input: TokenStream,
+) -> TokenStream
 {
-    let _: parse::Nothing = parse_macro_input!(params);
-    let mut input_fn = parse_macro_input!(input as ItemFn);
-    let mut ident =
-        parse_str::<Ident>(
-            &format!("{}{}", input_fn.sig.ident.to_string(), IDENT_SUFFIX),
-        )
-        .unwrap()
-    ;
-    ident.set_span(input_fn.sig.ident.span());
-    let _crate = CRATE_NAME!();
-    input_fn.block.stmts.insert(0, parse_quote!(
-        #[allow(dead_code, non_camel_case_types)]
-        #[derive(::#_crate::named_hack)]
-        enum #ident {}
-    ));
-    TokenStream::from(quote_spanned!(input_fn.span()=>
-        #input_fn
-    ))
+    named_impl(params.into(), input.into())
+        .unwrap_or_else(|err| {
+            let err = Some(TokenTree::from(Literal::string(err)));
+            quote!(
+                ::core::compile_error! { #err }
+            )
+        })
+        .into()
 }
 
-#[doc(hidden)] /** Not part of the public API */
-#[proc_macro_derive(named_hack)] pub
-fn hack (input: TokenStream)
-  -> TokenStream
+fn named_impl (
+    params: TokenStream,
+    input: TokenStream,
+) -> Result<TokenStream, &'static str>
 {
-    let input: DeriveInput = parse_macro_input!(input);
-    let ident = input.ident.to_string();
-    let ident = &ident[.. ident.len() - IDENT_SUFFIX.len()];
-    let fname = LitStr::new(ident, input.ident.span());
-    quote!(
-        macro_rules! function_name {() => (
-            #fname
-        )}
-    ).into()
+    // parse::Nothing for `params`.
+    if let Some(_) = params.into_iter().next() {
+        return Err("unexpected attribute arguments".into());
+    }
+
+    let ref mut tts = input.into_iter().peekable();
+
+    let mut input = Vec::<TokenTree>::new();
+
+    // `#` `[…]` attributes:
+    while matches!(tts.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '#') {
+        input.extend(tts.take(2));
+    }
+
+    // rest but scan the tt right after `fn`.
+    let fname = loop {
+        let tt = tts.next().unwrap();
+        if matches!(tt, TokenTree::Ident(ref ident) if ident.to_string() == "fn") {
+            input.push(tt);
+            let fname = tts.peek().unwrap().to_string();
+            input.extend(tts);
+            break Some(TokenTree::from(Literal::string(&fname)));
+        }
+        input.push(tt);
+    };
+
+    let g = match input.last_mut() {
+        | Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => g,
+        | _ => return Err("expected a `fn`"),
+    };
+    let g_span = g.span();
+    *g = Group::new(g.delimiter(), {
+        let mut body = quote!(
+            macro_rules! function_name {() => (
+                #fname
+            )}
+        );
+        body.extend(g.stream());
+        body
+    });
+    g.set_span(g_span);
+    Ok(input.into_iter().collect())
 }
+
+/// Mini `quote!` implementation,
+/// can only interpolate `impl IntoIterator<Item = TokenTree>`.
+macro_rules! quote_ {
+    (
+        @$q:tt
+        { $($code:tt)* } $($rest:tt)*
+    ) => (
+        $q.push(
+            TokenTree::Group(Group::new(
+                Delimiter::Brace,
+                quote!($($code)*)
+            ))
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        [ $($code:tt)* ]
+        $($rest:tt)*
+    ) => (
+        $q.push(
+            TokenTree::Group(Group::new(
+                Delimiter::Bracket,
+                quote!($($code)*)
+            ))
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        ( $($code:tt)* )
+        $($rest:tt)*
+    ) => (
+        $q.push(
+            TokenTree::Group(Group::new(
+                Delimiter::Parenthesis,
+                quote!($($code)*)
+            ))
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        #$var:ident
+        $($rest:tt)*
+    ) => (
+        $q.extend($var);
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        $tt:tt $($rest:tt)*
+    ) => (
+        $q.extend(
+            stringify!($tt)
+                .parse::<TokenStream>()
+                .unwrap()
+        );
+        quote!(@$q $($rest)*);
+    );
+
+    (
+        @$q:tt
+        /* nothign left */
+    ) => ();
+
+    (
+        $($code:tt)*
+    ) => ({
+        let mut _q = Vec::<TokenTree>::new();
+        quote!(@_q $($code)*);
+        _q.into_iter().collect::<TokenStream>()
+    });
+} use quote_ as quote;

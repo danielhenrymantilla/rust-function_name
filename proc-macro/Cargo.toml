@@ -3,7 +3,7 @@ proc-macro = true
 
 [package]
 name = "function_name-proc-macro"
-version = "0.2.3"  # Keep in sync
+version = "0.3.0"  # Keep in sync
 authors = ["Daniel Henry-Mantilla <daniel.henry.mantilla@gmail.com>"]
 edition = "2018"
 
@@ -14,14 +14,3 @@ repository = "https://github.com/danielhenrymantilla/rust-function_name"
 keywords = ["macro", "proc-macro", "proc-macro-attribute", "name", "function_name"]
 
 license = "MIT"
-
-[dependencies]
-proc-macro-crate.version = "0.1.4"
-quote.version = "1.0.0"
-syn.version = "1.0.0"
-syn.features = ["full"]
-
-[features]
-default = []
-test = []
-extra-traits = ["syn/extra-traits"]
