@@ -2,12 +2,12 @@
 # It is not intended for manual editing.
 [[package]]
 name = "function_name"
-version = "0.3.0-rc1"
+version = "0.3.0"
 dependencies = [
- "function_name-proc-macro 0.3.0-rc1",
+ "function_name-proc-macro 0.3.0",
 ]
 
 [[package]]
 name = "function_name-proc-macro"
-version = "0.3.0-rc1"
+version = "0.3.0"
 
