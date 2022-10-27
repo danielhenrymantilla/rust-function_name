@@ -21,7 +21,7 @@ jobs:
           - macos-latest
           - windows-latest
         rust-toolchains:
-          - 1.45.0
+          - 1.64.0
           - stable
           - beta
           - nightly
@@ -42,14 +42,14 @@ jobs:
         run: rm Cargo.lock
 
       - name: Cargo test (no raw identifier)
-        if: matrix.rust-toolchains == '1.45.0'
+        if: matrix.rust-toolchains == '1.64.0'
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: ${{ matrix.cargo-locked }}
 
       - name: Cargo test (all)
-        if: matrix.rust-toolchains != '1.45.0'
+        if: matrix.rust-toolchains != '1.64.0'
         uses: actions-rs/cargo@v1
         with:
           command: test
