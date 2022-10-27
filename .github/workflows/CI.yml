@@ -6,6 +6,11 @@ on:
       - master
   pull_request:
 
+# Should discard previous running build on same branch
+concurrency: 
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   # == CHECK == #
   check:
