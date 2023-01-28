@@ -1,34 +1,20 @@
 #[allow(unused_imports)]
 use {
-    ::core::{
-        ops::Not as _,
-    },
-    ::proc_macro::{*,
-        TokenStream,
-    },
+    ::core::ops::Not as _,
+    ::proc_macro::{TokenStream, *},
 };
 
-#[proc_macro_attribute] pub
-fn named (
-    params: TokenStream,
-    input: TokenStream,
-) -> TokenStream
-{
+#[proc_macro_attribute]
+pub fn named(params: TokenStream, input: TokenStream) -> TokenStream {
     named_impl(params.into(), input.into())
         .unwrap_or_else(|err| {
             let err = Some(TokenTree::from(Literal::string(err)));
-            quote!(
-                ::core::compile_error! { #err }
-            )
+            quote!(::core::compile_error! { #err })
         })
         .into()
 }
 
-fn named_impl (
-    params: TokenStream,
-    input: TokenStream,
-) -> Result<TokenStream, &'static str>
-{
+fn named_impl(params: TokenStream, input: TokenStream) -> Result<TokenStream, &'static str> {
     // parse::Nothing for `params`.
     if let Some(_) = params.into_iter().next() {
         return Err("unexpected attribute arguments".into());
@@ -56,8 +42,8 @@ fn named_impl (
     };
 
     let g = match input.last_mut() {
-        | Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => g,
-        | _ => return Err("expected a `fn`"),
+        Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => g,
+        _ => return Err("expected a `fn`"),
     };
     let g_span = g.span();
     *g = Group::new(g.delimiter(), {
@@ -150,4 +136,5 @@ macro_rules! quote_ {
         quote!(@_q $($code)*);
         _q.into_iter().collect::<TokenStream>()
     });
-} use quote_ as quote;
+}
+use quote_ as quote;

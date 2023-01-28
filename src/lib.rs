@@ -1,12 +1,9 @@
 #![cfg_attr(feature = "better-docs",
     cfg_attr(all(), doc = include_str!("../README.md")),
 )]
-#![doc(test(attr(
-    deny(warnings), allow(unused),
-)))]
+#![doc(test(attr(deny(warnings), allow(unused),)))]
 //!
 #![warn(missing_docs)]
-
 #![no_std]
 
 /// Entry point of the crate.

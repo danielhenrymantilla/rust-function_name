@@ -1,13 +1,10 @@
 use ::function_name::named;
 
 #[named]
-fn my_super_duper_function ()
-{
+fn my_super_duper_function() {
     dbg!(function_name!());
 }
 
-fn main ()
-{
+fn main() {
     my_super_duper_function();
 }
-

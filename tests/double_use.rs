@@ -2,20 +2,17 @@
 extern crate function_name;
 
 #[named]
-fn foo ()
-{
+fn foo() {
     assert_eq!(function_name!(), "foo");
 }
 
 #[named]
-fn bar ()
-{
+fn bar() {
     assert_eq!(function_name!(), "bar");
 }
 
 #[test]
-fn main ()
-{
+fn main() {
     foo();
     bar();
 }
